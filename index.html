@@ -88,6 +88,8 @@
     .top-actions {
       display: flex;
       gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .icon-btn {
@@ -244,6 +246,13 @@
       align-items: center;
       font-size: 0.78rem;
       font-weight: 700;
+      gap: 6px;
+    }
+
+    .badge-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .badge {
@@ -265,6 +274,7 @@
       padding: 3px 8px;
       border-radius: 6px;
       font-weight: 700;
+      display: inline-block;
     }
 
     .card-content {
@@ -449,10 +459,11 @@
   <div class="container">
     <header>
       <div class="title-area">
-        <h1>🥔 정처기 실기 이론 160제 플래시카드</h1>
+        <h1>🥔 정처기 실기 이론 160제</h1>
         <p id="statsText">암기 완료 0 / 160 · ⭐ 북마크 0</p>
       </div>
       <div class="top-actions">
+        <button class="icon-btn active" id="tipToggleBtn" title="암기 팁 켜기/끄기">💡 팁 켜기</button>
         <button class="icon-btn" id="shuffleBtn" title="랜덤 섞기">🔀 셔플</button>
         <button class="icon-btn" id="viewModeBtn" title="전체 목록 보기">📋 목록</button>
         <button class="icon-btn" id="resetBtn" title="학습 기록 초기화">🔄 초기화</button>
@@ -489,8 +500,10 @@
         <div class="flashcard" id="flashcard">
           <div class="card-face card-front">
             <div class="card-header">
-              <span class="badge" id="frontCat">1. DB</span>
-              <span class="tip-tag" id="frontTip">💡 두문자 팁</span>
+              <div class="badge-group">
+                <span class="badge" id="frontCat">1. DB</span>
+                <span class="tip-tag" id="frontTip">💡 두문자 팁</span>
+              </div>
               <span id="frontId">#001</span>
             </div>
             <div class="card-content" id="frontQuestion">질문이 표시됩니다.</div>
@@ -535,7 +548,6 @@
   </div>
 
   <script>
-    // 총 160제로 확장된 데이터셋 (누락 개념 및 기출(!), 두문자 팁 포함)
     const CARDS_DATA = [
       // --- 1과목: 데이터베이스 (DB) (001~035) ---
       { id: 1, cat: "1. DB", q: "사용자나 개발자 관점에서 본 데이터베이스 구조(사용자 뷰, 서브스키마)는?", a: "외부 스키마", tip: "외부=사용자뷰" },
@@ -711,6 +723,7 @@
     // 상태 관리 (localStorage 연동)
     let starredIds = JSON.parse(localStorage.getItem("eip_starred_160") || "[]");
     let doneIds = JSON.parse(localStorage.getItem("eip_done_160") || "[]");
+    let showTip = localStorage.getItem("eip_show_tip") !== "false"; // 기본값 true
     let currentCat = "ALL";
     let hideDone = false;
     let isShuffled = false;
@@ -736,15 +749,24 @@
     const hideDoneBtn = document.getElementById("hideDoneBtn");
     const shuffleBtn = document.getElementById("shuffleBtn");
     const viewModeBtn = document.getElementById("viewModeBtn");
+    const tipToggleBtn = document.getElementById("tipToggleBtn");
     const resetBtn = document.getElementById("resetBtn");
     const cardModeArea = document.getElementById("cardModeArea");
     const listViewArea = document.getElementById("listViewArea");
     const practiceBox = document.getElementById("practiceBox");
     const practiceInput = document.getElementById("practiceInput");
 
+    // 팁 토글 버튼 UI 동기화
+    function updateTipButtonUI() {
+      tipToggleBtn.textContent = showTip ? "💡 팁 켜기" : "💡 팁 꺼짐";
+      tipToggleBtn.classList.toggle("active", showTip);
+    }
+    updateTipButtonUI();
+
     function saveState() {
       localStorage.setItem("eip_starred_160", JSON.stringify(starredIds));
       localStorage.setItem("eip_done_160", JSON.stringify(doneIds));
+      localStorage.setItem("eip_show_tip", showTip);
       statsText.textContent = `암기 완료 ${doneIds.length} / 160 · ⭐ 북마크 ${starredIds.length}`;
     }
 
@@ -759,7 +781,6 @@
       });
 
       if (isShuffled) {
-        // Fisher-Yates 셔플 적용으로 무작위성 균등화
         list = [...list];
         for (let i = list.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -795,13 +816,19 @@
       const card = filteredCards[currentIndex];
       const padId = "#" + String(card.id).padStart(3, "0");
       frontCat.textContent = card.cat;
-      frontTip.textContent = "💡 " + (card.tip || "암기 팁");
-      frontTip.style.display = card.tip ? "inline-block" : "none";
+      
+      // 팁 표시 여부 적용
+      if (showTip && card.tip) {
+        frontTip.textContent = "💡 " + card.tip;
+        frontTip.style.display = "inline-block";
+      } else {
+        frontTip.style.display = "none";
+      }
+
       frontId.textContent = padId;
       backId.textContent = padId;
       frontQuestion.textContent = card.q;
       
-      // 버그 수정: 카드 전환 시 뒷면 정답 미리보기 방지를 위해 플립 해제 후 텍스트 반영
       setTimeout(() => {
         backAnswer.textContent = card.a;
       }, 150);
@@ -826,10 +853,11 @@
         const padId = "#" + String(c.id).padStart(3, "0");
         const isStar = starredIds.includes(c.id);
         const isDone = doneIds.includes(c.id);
+        const tipHtml = showTip && c.tip ? ` (💡 ${c.tip})` : "";
         return `
           <div class="list-item">
             <div class="list-item-top">
-              <span>${c.cat} (💡 ${c.tip || '-'})</span>
+              <span>${c.cat}${tipHtml}</span>
               <span>${padId}</span>
             </div>
             <div class="list-item-q">Q. ${c.q}</div>
@@ -930,6 +958,12 @@
       applyFilter(true);
     });
 
+    tipToggleBtn.addEventListener("click", () => {
+      showTip = !showTip;
+      updateTipButtonUI();
+      render();
+    });
+
     viewModeBtn.addEventListener("click", () => {
       isListView = !isListView;
       viewModeBtn.classList.toggle("active", isListView);
@@ -1003,7 +1037,6 @@
       const diffX = touchEndX - touchStartX;
       const diffY = touchEndY - touchStartY;
       
-      // 수평 이동 거리가 수직 이동 거리보다 크고 일정 이상일 때만 스와이프 작동
       if (Math.abs(diffX) > 55 && Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX < 0) document.getElementById("nextBtn").click();
         else document.getElementById("prevBtn").click();
