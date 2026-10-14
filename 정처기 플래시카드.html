@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>정보처리기사 실기 이론 160제 플래시카드</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-sub: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-soft: #eef2ff;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --border: #e2e8f0;
+      --card-front: #ffffff;
+      --card-back: #1e1b4b;
+      --card-back-text: #f8fafc;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-sub: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-soft: rgba(99, 102, 241, 0.15);
+      --border: #334155;
+      --card-front: #1e293b;
+      --card-back: #312e81;
+      --card-back-text: #ffffff;
+      --shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 12px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-area h1 {
+      font-size: 1.15rem;
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .title-area p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 2px 0 0 0;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .icon-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .icon-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--surface-sub);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .card-stage {
+      perspective: 1200px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 290px;
+      max-height: 420px;
+      margin: 4px 0;
+      user-select: none;
+    }
+
+    .flashcard {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+    }
+
+    .flashcard.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 20px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-front {
+      background: var(--card-front);
+      color: var(--text);
+    }
+
+    .card-back {
+      background: var(--card-back);
+      color: var(--card-back-text);
+      transform: rotateY(180deg);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .card-back .badge {
+      background: rgba(255, 255, 255, 0.15);
+      color: #e0e7ff;
+    }
+
+    .tip-tag {
+      font-size: 0.73rem;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .card-content {
+      margin: auto 0;
+      text-align: center;
+      font-size: 1.12rem;
+      line-height: 1.55;
+      font-weight: 700;
+      word-break: keep-all;
+      overflow-y: auto;
+      max-height: 180px;
+      padding: 4px;
+    }
+
+    .card-back .card-content {
+      font-size: 1.2rem;
+      color: #fde68a;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .practice-box {
+      display: none;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .practice-box.show {
+      display: flex;
+    }
+
+    .practice-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.1s, background-color 0.15s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .btn-star.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-done.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .list-view {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding-bottom: 24px;
+    }
+
+    .list-view.show {
+      display: flex;
+    }
+
+    .list-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .list-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .list-item-q {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .list-item-a {
+      font-size: 0.88rem;
+      color: var(--primary);
+      font-weight: 700;
+      background: var(--primary-soft);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .list-item-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+
+    .mini-btn {
+      background: var(--surface-sub);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mini-btn.active-star {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .mini-btn.active-done {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-area">
+        <h1>🥔 정처기 실기 이론 160제 플래시카드</h1>
+        <p id="statsText">암기 완료 0 / 160 · ⭐ 북마크 0</p>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="shuffleBtn" title="랜덤 섞기">🔀 셔플</button>
+        <button class="icon-btn" id="viewModeBtn" title="전체 목록 보기">📋 목록</button>
+        <button class="icon-btn" id="resetBtn" title="학습 기록 초기화">🔄 초기화</button>
+        <button class="icon-btn" id="themeBtn" title="다크 모드 전환">🌙</button>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" class="search-input" placeholder="키워드 검색 (예: OSI, 서브넷팅, 응집도, 회복, 디자인패턴...)" />
+      <button class="icon-btn" id="hideDoneBtn" title="암기 완료 카드 숨기기">✅제외</button>
+    </div>
+
+    <div class="category-tabs" id="categoryTabs">
+      <button class="tab-btn active" data-cat="ALL">전체 (160)</button>
+      <button class="tab-btn" data-cat="STAR">⭐ 오답/북마크</button>
+      <button class="tab-btn" data-cat="1. DB">1. DB (35)</button>
+      <button class="tab-btn" data-cat="2. 네트워크/OS">2. 네트워크/OS (40)</button>
+      <button class="tab-btn" data-cat="3. SW 개발">3. SW 개발 (25)</button>
+      <button class="tab-btn" data-cat="4. SW 설계">4. SW 설계 (30)</button>
+      <button class="tab-btn" data-cat="5. 보안/신기술">5. 보안/신기술 (30)</button>
+    </div>
+
+    <div class="status-row">
+      <span id="counterText">1 / 160</span>
+      <button class="icon-btn" id="typingToggleBtn" style="padding: 4px 8px; font-size: 0.75rem;">⌨️ 직접 입력 모드</button>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- 1-by-1 Card Mode -->
+    <div id="cardModeArea" style="display: flex; flex-direction: column; flex: 1; gap: 10px;">
+      <div class="card-stage" id="cardStage">
+        <div class="flashcard" id="flashcard">
+          <div class="card-face card-front">
+            <div class="card-header">
+              <span class="badge" id="frontCat">1. DB</span>
+              <span class="tip-tag" id="frontTip">💡 두문자 팁</span>
+              <span id="frontId">#001</span>
+            </div>
+            <div class="card-content" id="frontQuestion">질문이 표시됩니다.</div>
+            <div class="card-footer">
+              <span>👆 터치하여 정답 확인</span>
+              <span id="frontStatus"></span>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-header">
+              <span class="badge" id="backCat">정답 (Answer)</span>
+              <span id="backId">#001</span>
+            </div>
+            <div class="card-content" id="backAnswer">정답이 표시됩니다.</div>
+            <div class="card-footer">
+              <span>👆 다시 터치하면 문제로</span>
+              <span>좌우 스와이프로 이동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="practice-box" id="practiceBox">
+        <input type="text" id="practiceInput" class="practice-input" placeholder="정답 용어를 입력 후 Enter를 누르세요" />
+        <button class="btn btn-primary" id="checkAnswerBtn" style="padding: 10px 16px;">정답 확인</button>
+      </div>
+
+      <div class="controls-grid">
+        <button class="btn btn-star" id="starBtn">⭐ 헷갈림 (북마크)</button>
+        <button class="btn btn-done" id="doneBtn">✅ 외웠음 (완료)</button>
+      </div>
+
+      <div class="nav-grid">
+        <button class="btn" id="prevBtn">◀ 이전</button>
+        <button class="btn btn-primary" id="flipBtn">🔄 카드 뒤집기</button>
+        <button class="btn" id="nextBtn">다음 ▶</button>
+      </div>
+    </div>
+
+    <!-- List View Mode -->
+    <div class="list-view" id="listViewArea"></div>
+  </div>
+
+  <script>
+    // 총 160제로 확장된 데이터셋 (누락 개념 및 기출(!), 두문자 팁 포함)
+    const CARDS_DATA = [
+      // --- 1과목: 데이터베이스 (DB) (001~035) ---
+      { id: 1, cat: "1. DB", q: "사용자나 개발자 관점에서 본 데이터베이스 구조(사용자 뷰, 서브스키마)는?", a: "외부 스키마", tip: "외부=사용자뷰" },
+      { id: 2, cat: "1. DB", q: "조직 전체적인 뷰로서 개체 간 관계, 제약 조건, 접근 권한, 보안 및 무결성을 정의한 스키마는?", a: "개념 스키마", tip: "개념=전체뷰" },
+      { id: 3, cat: "1. DB", q: "물리적 저장장치 관점에서 실제로 저장될 레코드 형식을 정의한 스키마는?", a: "내부 스키마", tip: "내부=물리저장" },
+      { id: 4, cat: "1. DB", q: "특정 시점의 릴레이션에 들어있는 실제 데이터 집합(= 릴레이션 외연)은?", a: "릴레이션 인스턴스 (Relation Instance)", tip: "인스턴스=외연" },
+      { id: 5, cat: "1. DB", q: "테이블의 세로 항목(컬럼)과 가로 항목(행)을 관계 데이터 모델에서 각각 무엇이라 하는가?", a: "열 = 속성(Attribute) / 행 = 튜플(Tuple)", tip: "열속행튜" },
+      { id: 6, cat: "1. DB", q: "릴레이션에서 '속성(열)의 수'와 '튜플(행)의 수'를 각각 뜻하는 용어는?", a: "속성 수 = 차수(Degree) / 튜플 수 = 카디널리티(Cardinality)", tip: "차수=속성, 카디=튜플" },
+      { id: 7, cat: "1. DB", q: "데이터 모델의 3가지 구성요소(구·연·제)는?", a: "구조(타입·관계), 연산(데이터 처리), 제약조건(무결성 유지)", tip: "구연제" },
+      { id: 8, cat: "1. DB", q: "데이터베이스 설계 및 구축 프로세스 4단계 순서(요개논물+구현)는?", a: "요구조건 분석 → 개념적 설계(E-R) → 논리적 설계(정규화) → 물리적 설계 → 구현", tip: "요개논물+구현" },
+      { id: 9, cat: "1. DB", q: "E-R 다이어그램에서 사각형(▭), 마름모(◇), 타원(○), 이중 타원, 밑줄 타원이 각각 의미하는 것은?", a: "사각형(개체), 마름모(관계), 타원(속성), 이중 타원(다중값속성), 밑줄 타원(기본키)", tip: "사개마관타속" },
+      { id: 10, cat: "1. DB", q: "E-R 다이어그램에서 '개체 집합과 관계 집합'을 연결하는 선과 '관계 집합의 속성'을 연결하는 선은?", a: "개체↔관계 = 실선(──) / 관계 속성 = 점선(┄┄)", tip: "개관실 속점" },
+      { id: 11, cat: "1. DB", q: "트랜잭션의 연산이 모두 실행되거나 하나도 실행되지 않아야 한다는 특성(All or Nothing)은?", a: "원자성 (Atomicity)", tip: "원자성=모 아니면 도" },
+      { id: 12, cat: "1. DB", q: "트랜잭션의 나머지 ACID 특성 3가지(일관성 유지, 끼어들기 방지, 영구 반영)는?", a: "일관성(Consistency), 고립성(Isolation), 지속성(Durability)", tip: "일고지" },
+      { id: 13, cat: "1. DB", q: "장애 발생 시 시작(Start)과 완료(Commit) 기록이 모두 있는 트랜잭션을 재실행하여 복구하는 기법은!", a: "Redo (재실행)", tip: "완료 있으면 Redo" },
+      { id: 14, cat: "1. DB", q: "시작(Start) 기록은 있으나 완료(Commit) 기록이 없는 트랜잭션의 작업을 모두 취소하는 기법은!", a: "Undo (취소)", tip: "완료 없으면 Undo" },
+      { id: 15, cat: "1. DB", q: "로그 기반 회복 중 완료 전까지 DB 변경을 미루어 Redo만 사용하는 기법과 즉시 반영하여 Redo·Undo가 모두 필요한 기법은?", a: "지연 갱신(Redo만) / 즉각 갱신(Redo, Undo 모두)", tip: "지연=Redo만" },
+      { id: 16, cat: "1. DB", q: "특정 시점의 DB 상태를 저장해 두었다가 복구하는 기법과 원본 복사본(그림자 페이지)을 만들어 실패 시 대체하는 회복 기법은?", a: "체크포인트 회복 / 그림자 페이징(Shadow Paging)", tip: "체크포인트/그림자" },
+      { id: 17, cat: "1. DB", q: "트랜잭션 순차 진행을 보장하는 직렬화 기법으로, 동시 읽기만 가능한 락과 읽기/쓰기가 모두 불가능한 락은!", a: "로킹(Locking) — S-Lock(공유락: 읽기O) / X-Lock(배타락: 읽기쓰기X)", tip: "S=공유, X=배타" },
+      { id: 18, cat: "1. DB", q: "데이터를 '어떻게(HOW)' 가져올지 명시하는 절차적 언어와 '무엇을(WHAT)' 원하는지 명시하는 비절차적 언어는?", a: "절차적 = 관계대수 / 비절차적 = 관계해석", tip: "대수=HOW, 해석=WHAT" },
+      { id: 19, cat: "1. DB", q: "일반 집합 연산자 4가지와 각각의 기호는?", a: "합집합(∪), 교집합(∩), 차집합(−), 카티션 프로덕트(×)", tip: "합교차카" },
+      { id: 20, cat: "1. DB", q: "순수 관계 연산자 중 조건을 만족하는 행(튜플)을 수평 추출하는 연산자와 열(속성)을 수직 추출하는 연산자는!", a: "행(수평) = 셀렉트(Select, σ) / 열(수직) = 프로젝트(Project, π)", tip: "셀렉트 행, 프로젝트 열" },
+      { id: 21, cat: "1. DB", q: "공통 속성 기준으로 두 릴레이션을 결합하는 연산자와 B의 모든 튜플과 관계있는 A의 튜플만 반환하는 연산자는?", a: "조인(Join, ⋈) / 디비전(Division, ÷)", tip: "조인 결합, 디비전 몫" },
+      { id: 22, cat: "1. DB", q: "정규화 단계별 핵심 조건(원·부·이·결·다·조)은!", a: "1NF(원자값), 2NF(부분함수종속 제거), 3NF(이행함수종속 제거), BCNF(모든 결정자 후보키), 4NF(다치종속 제거), 5NF(조인종속 제거)", tip: "원부이결다조" },
+      { id: 23, cat: "1. DB", q: "정규화된 테이블 구조를 성능 최적화를 위해 의도적으로 통합·분리하거나 중복을 허용하는 기법은?", a: "반정규화", tip: "성능향상 목적" },
+      { id: 24, cat: "1. DB", q: "불필요한 데이터 없이 새 데이터 삽입 불가, 튜플 삭제 시 의도치 않은 정보 손실, 중복 데이터 일부 수정으로 인한 불일치를 각각 무엇이라 하는가?", a: "삽입 이상 / 삭제 이상 / 갱신 이상", tip: "삽삭갱" },
+      { id: 25, cat: "1. DB", q: "하나의 속성이 가질 수 있는 값들의 집합과 DB 구조 제약조건 명세를 정의한 릴레이션 구성 요소는?", a: "도메인(Domain) / 릴레이션 스키마(Relation Schema)", tip: "도메인=값집합" },
+      { id: 26, cat: "1. DB", q: "각 튜플을 고유하게 식별하는 속성(후보키 등)과 유일성·최소성을 만족하는 키, 기본키로 선택되지 못한 키는?", a: "식별자(Identifier) / 후보키(유일성O·최소성O) / 대체키", tip: "후보키=유일+최소" },
+      { id: 27, cat: "1. DB", q: "유일성은 만족하지만 최소성은 만족하지 않는 키와 다른 릴레이션의 기본키를 참조하는 키는?", a: "슈퍼키(유일성O·최소성X) / 외래키(Foreign Key)", tip: "슈퍼키는 최소성X" },
+      { id: 28, cat: "1. DB", q: "패리티나 복제 없이 분산 저장(스트라이핑)만 하는 RAID와 복제 저장(미러링)하여 안정성을 높인 RAID는?", a: "스트라이핑 = RAID 0 / 미러링 = RAID 1", tip: "0=스트라이핑, 1=미러링" },
+      { id: 29, cat: "1. DB", q: "스트라이핑+분산 패리티(최소 3개), 스트라이핑+이중 분산 패리티(최소 4개), 미러링 후 스트라이핑(최소 4개) 방식은?", a: "RAID 5 / RAID 6 / RAID 10", tip: "5패리티, 6이중패리티, 10미러+스트" },
+      { id: 30, cat: "1. DB", q: "기본키가 NULL이거나 중복될 수 없다는 무결성과 외래키가 참조 테이블 기본키 값 또는 NULL이어야 한다는 무결성은!", a: "개체 무결성(PRIMARY KEY) / 참조 무결성(FOREIGN KEY)", tip: "개체PK, 참조FK" },
+      { id: 31, cat: "1. DB", q: "속성값이 정의된 도메인에 속해야 하는 무결성, 비즈니스 규칙(TRIGGER) 기반 무결성, 고유값(UNIQUE) 보장 무결성은?", a: "도메인 무결성 / 사용자 정의 무결성 / 키 무결성", tip: "도메인/사용자/키" },
+      { id: 32, cat: "1. DB", q: "함수 종속성 중 기본키 전체에 대해 종속되는 것과 기본키의 일부 속성에 종속되는 것은?", a: "완전 함수 종속(Full) / 부분 함수 종속(Partial)", tip: "전체=완전, 일부=부분" },
+      { id: 33, cat: "1. DB", q: "A→B, B→C가 성립할 때 A→C가 성립하는 함수 종속성은?", a: "이행 함수 종속", tip: "A가 B를, B가 C를" },
+      { id: 34, cat: "1. DB", q: "레코드가 파일에 저장된 순서대로 차례차례 접근하는 방식과 레코드 키 값과 주소 포인터를 쌍으로 구성해 검색을 빠르게 하는 방식은?", a: "순차 접근 방법 / 인덱스(Index) 접근 방법", tip: "순차접근 vs 인덱스" },
+      { id: 35, cat: "1. DB", q: "레코드 키 값에 해시 함수를 사용하여 매우 빠른 접근 방식을 제공하는 파일 접근 방법은?", a: "해싱 (Hashing)", tip: "해시는 해시함수" },
+
+      // --- 2과목: 네트워크 / OS (036~075) ---
+      { id: 36, cat: "2. 네트워크/OS", q: "가장 먼저 들어온 페이지를 교체하는 알고리즘과 가장 오랫동안 참조되지 않은 페이지를 교체하는 알고리즘은!", a: "FIFO / LRU", tip: "FIFO선입선출, LRU최장미참조" },
+      { id: 37, cat: "2. 네트워크/OS", q: "참조 횟수가 가장 적은 페이지를 교체하는 페이지 교체 알고리즘은!", a: "LFU (Least Frequently Used)", tip: "LFU=참조횟수 적은것" },
+      { id: 38, cat: "2. 네트워크/OS", q: "실행 시간이 짧은 프로세스에 먼저 할당하는 스케줄링(선점/비선점 모두 가능)과 이를 선점형으로 구현한 스케줄링은!", a: "SJF / SRT (선점형 SJF)", tip: "SJF 짧은것 우선" },
+      { id: 39, cat: "2. 네트워크/OS", q: "SJF에 대기 시간을 고려한 비선점형 스케줄링과 FIFO에 동일한 시간 할당량을 지정한 선점형 스케줄링은!", a: "HRN / 라운드 로빈 (Round Robin, RR)", tip: "HRN대기고려, RR시간할당" },
+      { id: 40, cat: "2. 네트워크/OS", q: "마감 시간이 임박한 프로세스를 먼저 처리하는 스케줄링과 우선순위에 따라 할당하는 스케줄링은?", a: "기한부 스케줄링 / 우선순위 스케줄링", tip: "기한부/우선순위" },
+      { id: 41, cat: "2. 네트워크/OS", q: "프로세스 스케줄링에서 '반환 시간'과 '대기 시간'의 관계를 구하는 공식은?", a: "반환 시간 = 대기 시간 + 실행 시간", tip: "반환=대기+실행" },
+      { id: 42, cat: "2. 네트워크/OS", q: "패킷 교환 방식 중 비연결형으로 독립적이고 순서 무관하게 전송하는 방식과 연결형으로 미리 논리적 회선을 만드는 방식은!", a: "데이터그램(Datagram) / 가상회선(Virtual Circuit)", tip: "데이터그램=비연결, 가상회선=연결" },
+      { id: 43, cat: "2. 네트워크/OS", q: "OSI 7계층 중 물리, 데이터링크, 네트워크, 전송, 세션, 표현, 응용 계층의 영단어 및 주요 PDU는?", a: "1물리(Bit), 2데이터링크(Frame), 3네트워크(Packet), 4전송(Segment), 5세션, 6표현, 7응용(Data)", tip: "비프파세다응" },
+      { id: 44, cat: "2. 네트워크/OS", q: "논리 주소(IP)를 물리 주소(MAC)로 변환하는 프로토콜과 반대로 물리 주소(MAC)를 논리 주소(IP)로 변환하는 프로토콜은!", a: "ARP (IP→MAC) / RARP (MAC→IP)", tip: "아르프(ARP) IP->MAC" },
+      { id: 45, cat: "2. 네트워크/OS", q: "오류 정보를 전송하고 Ping-of-Death에 악용되는 프로토콜과 멀티캐스트 그룹 관리 프로토콜은!", a: "ICMP / IGMP", tip: "ICMP오류, IGMP멀티캐스트" },
+      { id: 46, cat: "2. 네트워크/OS", q: "고정된 경로를 사용하는 라우팅 방식과 경로를 동적으로 계산·변경하는 라우팅 방식은?", a: "정적 라우팅 / 동적 라우팅", tip: "정적 vs 동적" },
+      { id: 47, cat: "2. 네트워크/OS", q: "동일한 AS 내 내부 라우팅 프로토콜(IGP) 중 거리 벡터(벨만-포드)를 쓰며 홉(Hop) 수가 최소인 경로는!", a: "RIP", tip: "RIP=거리벡터(홉수)" },
+      { id: 48, cat: "2. 네트워크/OS", q: "내부 라우팅 프로토콜(IGP) 중 링크 상태(다익스트라)를 쓰며 경로 비용이 최소인 경로는!", a: "OSPF", tip: "OSPF=링크상태(비용)" },
+      { id: 49, cat: "2. 네트워크/OS", q: "서로 다른 AS 간 외부 라우팅 프로토콜(EGP)로 경로 벡터 알고리즘을 사용하는 것은!", a: "BGP", tip: "BGP=서로다른AS" },
+      { id: 50, cat: "2. 네트워크/OS", q: "데이터 링크 계층 프로토콜 중 비트 지향 제어 프로토콜 명칭과 비동기식 시분할 다중화 패킷형 전송 기술(53바이트 셀)은?", a: "HDLC / ATM", tip: "HDLC, ATM" },
+      { id: 51, cat: "2. 네트워크/OS", q: "두 노드 직접 연결 시 사용하는 프로토콜과 고속 데이터 전송을 위한 중계·다중화 기능만 수행하는 데이터 링크 프로토콜은?", a: "PPP (Point to Point) / 프레임 릴레이 (Frame Relay)", tip: "PPP와 프레임릴레이" },
+      { id: 52, cat: "2. 네트워크/OS", q: "HDLC 프레임의 3종류(정보, 감시/감독, 비번호)와 식별 비트 형태는?", a: "I 프레임(0) / S 프레임(10) / U 프레임(11)", tip: "I(0), S(10), U(11)" },
+      { id: 53, cat: "2. 네트워크/OS", q: "HDLC 동작 모드 3가지(NRM, ARM, ABM)의 특징은?", a: "정규 응답 모드(NRM, 폴 수신 시만), 비동기 응답 모드(ARM, 허가 없이 송신), 비동기 균형 모드(ABM, 혼합국끼리 허가 없이 전송)", tip: "NRM/ARM/ABM" },
+      { id: 54, cat: "2. 네트워크/OS", q: "수신 측이 스스로 오류를 수정하는 전진 오류 수정(FEC) 대표 코드 2가지는?", a: "해밍 코드(Hamming, 1비트 수정) / 상승 코드", tip: "해밍코드=1비트수정" },
+      { id: 55, cat: "2. 네트워크/OS", q: "재전송 기반 후진 오류 제어(BEC) 기법 4가지는?", a: "패리티 검사, CRC(순환 잉여 검사), ARQ(자동 반복 요청), 블록합 검사", tip: "패리티/CRC/ARQ/블록합" },
+      { id: 56, cat: "2. 네트워크/OS", q: "원격 접속 암호화 프로토콜(포트 22)과 일반 원격 접속(포트 23), 파일 전송(포트 21), 도메인 서비스(포트 53)는!", a: "SSH(22) / Telnet(23) / FTP(21) / DNS(53)", tip: "SSH22, 텔넷23, FTP21, DNS53" },
+      { id: 57, cat: "2. 네트워크/OS", q: "웹 요청/응답(포트 80), SSL/TLS 보안 웹(포트 443), 메일 전송(포트 25), 메일 다운로드 수신(포트 110)은?", a: "HTTP(80) / HTTPS(443) / SMTP(25) / POP3(110)", tip: "HTTP80, HTTPS443, SMTP25, POP3 110" },
+      { id: 58, cat: "2. 네트워크/OS", q: "메일 동기화 수신 프로토콜(포트 143)과 링크로 연결된 문서, 웹 문서 구조 정의 언어는?", a: "IMAP(143) / Hypertext / HTML", tip: "IMAP143, HTML" },
+      { id: 59, cat: "2. 네트워크/OS", q: "IP 주소 종류 3가지(네트워크를 대표, 장치에 할당, 모든 호스트에 동시 전송)는?", a: "네트워크 주소 / 호스트 주소 / 브로드캐스트 주소", tip: "네트워크/호스트/브로드캐스트" },
+      { id: 60, cat: "2. 네트워크/OS", q: "IPv4와 IPv6의 비트 수, 구분 단위/기호, 표기 진수는!", a: "IPv4(32비트, '.' 구분, 10진수) / IPv6(128비트, ':' 구분, 16진수)", tip: "IPv4 32비트 10진수, IPv6 128비트 16진수" },
+      { id: 61, cat: "2. 네트워크/OS", q: "호스트 IP와 서브넷 마스크로 '네트워크 주소'와 '브로드캐스트 주소'를 구하는 연산법은?", a: "네트워크 주소 = IP AND 서브넷마스크 / 브로드캐스트 = 네트워크 OR (NOT 서브넷마스크)", tip: "AND 연산, OR NOT 연산" },
+      { id: 62, cat: "2. 네트워크/OS", q: "서브넷 마스크에서 호스트 비트가 n개일 때 전체 IP 개수와 실제 사용 가능한 호스트 수는!", a: "전체 주소 = 2^n개 / 사용 가능 호스트 = (2^n - 2)개", tip: "양 끝 주소 제외(-2)" },
+      { id: 63, cat: "2. 네트워크/OS", q: "서브넷팅 시 CIDR 표기법 예시(192.168.1.0에 255.255.255.0)와 표준화된 가변 길이 서브넷 분할 방식은?", a: "192.168.1.0/24 / FLSM (고정 길이 서브넷 분할)", tip: "CIDR / FLSM" },
+      { id: 64, cat: "2. 네트워크/OS", q: "사설 IP를 공인 IP로 변환하여 IPv4 부족 문제를 해결하는 기술은?", a: "NAT (Network Address Translation)", tip: "NAT=사설->공인변환" },
+      { id: 65, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 현재 경로 확인, 디렉토리 내용 출력, 디렉토리 이동 명령어는?", a: "pwd / ls / cd", tip: "pwd, ls, cd" },
+      { id: 66, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 파일/디렉토리 복사, 이동/이름변경, 삭제 명령어는?", a: "cp / mv / rm", tip: "cp, mv, rm" },
+      { id: 67, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 새 디렉토리 생성, 파일 내용 출력/연결, 파일 검색 명령어는?", a: "mkdir / cat / find", tip: "mkdir, cat, find" },
+      { id: 68, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 파일에서 특정 패턴 검색, 접근 권한 변경, 프로세스 목록 조회 명령어는?", a: "grep / chmod / ps", tip: "grep, chmod, ps" },
+      { id: 69, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 프로세스 종료, 터미널 화면 지우기, 문자열 출력 명령어는?", a: "kill / clear / echo", tip: "kill, clear, echo" },
+      { id: 70, cat: "2. 네트워크/OS", q: "유닉스 명령어 중 빈 파일 생성 및 수정 시간 변경 명령어는?", a: "touch", tip: "touch=파일생성" },
+      { id: 71, cat: "2. 네트워크/OS", q: "chmod 명령어에서 읽기(r), 쓰기(w), 실행(x)의 8진수 숫자는?", a: "읽기 r=4 / 쓰기 w=2 / 실행 x=1", tip: "r4, w2, x1" },
+      { id: 72, cat: "2. 네트워크/OS", q: "chmod 명령어의 권한 대상 기호 3가지(사용자, 그룹, 기타)는?", a: "사용자(u) / 그룹(g) / 기타(o)", tip: "u, g, o" },
+      { id: 73, cat: "2. 네트워크/OS", q: "네트워크 계층 프로토콜의 핵심 역할과 주소(IP)를 관리하는 프로토콜은?", a: "데이터 전송 최적 경로 제공 / IP", tip: "최적 경로 제공" },
+      { id: 74, cat: "2. 네트워크/OS", q: "라우팅 프로토콜 분류 중 동일한 AS 내에서 쓰는 프로토콜과 서로 다른 AS 간 쓰는 프로토콜은?", a: "내부 라우팅 프로토콜(IGP) / 외부 라우팅 프로토콜(EGP)", tip: "IGP(내부), EGP(외부)" },
+      { id: 75, cat: "2. 네트워크/OS", q: "데이터 링크 계층 프로토콜의 핵심 역할 2가지는?", a: "노드 사이 데이터 전송 및 오류 수정", tip: "노드간 전송 및 오류수정" },
+
+      // --- 3과목: SW 개발 (076~100) ---
+      { id: 76, cat: "3. SW 개발", q: "화이트박스 테스트 커버리지 5가지의 강도 순서(약한 것 → 강한 것)는!", a: "구문(문장) < 결정(분기) < 조건 < 조건/결정 < 변경 조건/결정(MC/DC)", tip: "구결조조결MC/DC" },
+      { id: 77, cat: "3. SW 개발", q: "모든 명령문을 수행하는 커버리지와 전체 결정문의 참/거짓을 수행하는 커버리지는?", a: "구문(Statement) 커버리지 / 결정(Decision) 커버리지", tip: "구문=모든명령문" },
+      { id: 78, cat: "3. SW 개발", q: "결정문 내 개별 조건식을 수행하는 커버리지와 개별 조건식이 전체 결과에 독립적 영향을 미치는지 테스트하는 커버리지는?", a: "조건 커버리지 / 변경 조건/결정 커버리지(MC/DC)", tip: "조건 / MC/DC" },
+      { id: 79, cat: "3. SW 개발", q: "블랙박스 테스트 중 유효값/무효값 그룹화 방식, 경계값 포함 설계 방식, 논리적 조건과 행동을 표로 정리하는 방식은?", a: "동등 분할 / 경곗값 분석 / 결정 테이블(Decision Table)", tip: "동분/경계값/결정테이블" },
+      { id: 80, cat: "3. SW 개발", q: "블랙박스 테스트 중 원인-결과 그래프, 상태 변화 기반 테스트, 테스터의 경험·직관 기반 오류 예측 방식은?", a: "원인-결과 그래프 / 상태 전이 테스트 / 오류 예측(Error Guessing)", tip: "원인결과/상태전이/오류예측" },
+      { id: 81, cat: "3. SW 개발", q: "블랙박스 테스트 중 비교 테스트, 최소 페어(pair) 조합 테스트, 트리 구조 분석 테스트, 유스케이스 시나리오 기반 테스트는?", a: "비교 테스트 / 페어와이즈 테스트 / 분류 트리 테스트 / 유스케이스 테스트", tip: "비교/페어와이즈/분류트리/유스케이스" },
+      { id: 82, cat: "3. SW 개발", q: "상향식 통합 테스트(하위→상위)에서 가상의 상위 모듈 역할을 하는 도구와 하향식 통합 테스트(상위→하위)에서 가상의 하위 모듈 역할을 하는 도구는!", a: "테스트 드라이버(Test Driver) / 테스트 스텁(Test Stub)", tip: "상향드라이버, 하향스텁" },
+      { id: 83, cat: "3. SW 개발", q: "테스트 자동화 구성요소 중 테스트 환경을 구축하는 도구/프레임워크와 테스트 최소 단위, 테스트 케이스 집합은?", a: "테스트 하네스(Test Harness) / 테스트 케이스 / 테스트 슈트", tip: "하네스/케이스/슈트" },
+      { id: 84, cat: "3. SW 개발", q: "테스트 자동화 구성요소 중 테스트 케이스를 코드화한 것과 동작 흐름을 묶은 시나리오는?", a: "테스트 스크립트 / 테스트 시나리오", tip: "스크립트/시나리오" },
+      { id: 85, cat: "3. SW 개발", q: "프로그램을 실행하지 않고 코딩 표준·문법 오류를 찾는 도구와 실행하면서 메모리 누수·보안 취약점을 찾는 도구는!", a: "정적 분석 도구 / 동적 분석 도구", tip: "정적(미실행), 동적(실행)" },
+      { id: 86, cat: "3. SW 개발", q: "자바 단위 테스트를 위한 xUnit 계열 프레임워크와 사용되는 애너테이션은?", a: "JUnit / @Test", tip: "JUnit (@Test)" },
+      { id: 87, cat: "3. SW 개발", q: "테스트 케이스의 5가지 구성 요소는?", a: "식별자 ID, 테스트 항목, 테스트 조건, 테스트 데이터, 예상 결과", tip: "식항조대예" },
+      { id: 88, cat: "3. SW 개발", q: "V-모델의 테스트 레벨 4단계 순서는!", a: "단위 테스트 → 통합 테스트 → 시스템 테스트 → 인수 테스트", tip: "단통시인" },
+      { id: 89, cat: "3. SW 개발", q: "인수 테스트 중 개발자 환경에서 통제된 상태로 수행하는 것과 개발자 없이 수행하는 것은?", a: "알파 테스트 / 베타 테스트", tip: "알파(개발자환경), 베타(사용자)" },
+      { id: 90, cat: "3. SW 개발", q: "오류 수정·변경 후 이로 인해 새로 유입된 오류가 없는지 확인하는 반복 시험은!", a: "회귀 테스트 (Regression Test)", tip: "회귀=변경후 재테스트" },
+      { id: 91, cat: "3. SW 개발", q: "데이터 링크 계층(2계층)에서 L2F와 PPTP를 결합해 VPN에서 사용하는 터널링 프로토콜과 네트워크 계층(3계층)에서 IP 패킷 단위로 암호화하는 프로토콜은!", a: "L2TP / IPSec", tip: "L2TP, IPSec" },
+      { id: 92, cat: "3. SW 개발", q: "공중 인터넷망을 하나의 사설망처럼 사용하는 기술 명칭과 웹 통신 암호화 표준인 전송 계층 프로토콜은?", a: "VPN (Virtual Private Network) / SSL/TLS", tip: "VPN, SSL/TLS" },
+      { id: 93, cat: "3. SW 개발", q: "응용 계층에서 메시지 단위로 암호화하는 프로토콜과 통신 채널 전체를 암호화하는 웹 트래픽 프로토콜은?", a: "S-HTTP / HTTPS", tip: "S-HTTP(메시지), HTTPS(채널)" },
+      { id: 94, cat: "3. SW 개발", q: "인터페이스 통신 기술 중 일부 콘텐츠만 리로드하는 기술과 Promise 기반 비동기 API, 양방향 실시간 통신, API용 쿼리 언어는?", a: "AJAX / Fetch API / 웹소켓(WebSocket) / GraphQL", tip: "아작스/페치/웹소켓/그래프QL" },
+      { id: 95, cat: "3. SW 개발", q: "데이터 표현 형식 3가지(key-value 쌍 비주석, 태그 사용 확장성, 들여쓰기·주석 가능)는?", a: "JSON / XML / YAML", tip: "JSON/XML/YAML" },
+      { id: 96, cat: "3. SW 개발", q: "클래식 웹 서비스 프로토콜 중 검색 엔진 역할, XML 형식 기술 언어, XML 메시지 프로토콜은?", a: "UDDI / WSDL / SOAP", tip: "UDDI/WSDL/SOAP" },
+      { id: 97, cat: "3. SW 개발", q: "현대 웹 서비스 아키텍처 스타일로 HTTP를 활용하고 주로 JSON을 사용하는 것은?", a: "REST", tip: "REST API" },
+      { id: 98, cat: "3. SW 개발", q: "소프트웨어 변경 사항을 관리하는 '형상 관리'의 4가지 절차는!", a: "형상 식별 → 형상 통제 → 형상 감사 → 형상 기록", tip: "식통감기" },
+      { id: 99, cat: "3. SW 개발", q: "대표적인 형상 관리 도구 3가지는?", a: "CVS, SVN, Git", tip: "CVS/SVN/Git" },
+      { id: 100, cat: "3. SW 개발", q: "시스템 통합 솔루션인 EAI의 4가지 구축 유형과 표준 인터페이스 기반 서비스 버스는?", a: "Point to Point, Hub & Spoke, Message Bus, Hybrid / ESB", tip: "EAI유형4개, ESB" },
+
+      // --- 4과목: SW 설계 (101~130) ---
+      { id: 101, cat: "4. SW 설계", q: "생성 패턴 5가지(싱팩빌프앱)의 명칭은!", a: "싱글톤, 팩토리 메서드, 빌더, 프로토타입, 앱스트랙트 팩토리(추상 팩토리)", tip: "싱팩빌프앱" },
+      { id: 102, cat: "4. SW 설계", q: "객체를 오직 하나만 생성하여 어디서든 참조하게 하는 패턴과 기존 인스턴스를 복제하여 수정하는 패턴은?", a: "싱글톤(Singleton) / 프로토타입(Prototype)", tip: "싱글톤/프로토타입" },
+      { id: 103, cat: "4. SW 설계", q: "상위 클래스는 인터페이스만 정의하고 서브 클래스가 실제 생성을 담당하는 패턴과 조합 인터페이스를 제공하는 Kit 패턴은?", a: "팩토리 메서드 / 앱스트랙트 팩토리(Abstract Factory)", tip: "팩토리메서드/앱스트랙트팩토리" },
+      { id: 104, cat: "4. SW 설계", q: "동일한 생성 절차로 다른 표현 결과를 만들어 텔레스코핑 패턴 문제를 해결하는 생성 패턴은?", a: "빌더 (Builder)", tip: "빌더=복잡객체 생성" },
+      { id: 105, cat: "4. SW 설계", q: "구조 패턴 7가지(어데퍼프 브플컴)의 명칭은!", a: "어댑터, 데코레이터, 퍼사드, 프록시, 브리지, 플라이웨이트, 컴포지트", tip: "어데퍼프 브플컴" },
+      { id: 106, cat: "4. SW 설계", q: "서로 다른 인터페이스를 연결하는 패턴과 기존 코드 수정 없이 객체를 감싸서 기능을 확장하는 패턴은?", a: "어댑터(Adapter) / 데코레이터(Decorator)", tip: "어댑터/데코레이터" },
+      { id: 107, cat: "4. SW 설계", q: "복잡한 시스템에 단순한 인터페이스를 제공하는 패턴과 객체의 대리자가 대신 처리하는 패턴은?", a: "퍼사드(Facade) / 프록시(Proxy)", tip: "퍼사드(단순화), 프록시(대리)" },
+      { id: 108, cat: "4. SW 설계", q: "기능 계층과 구현 계층을 연결하는 패턴, 메모리를 절약하고 클래스를 경량화하는 패턴, 트리 구조 패턴은?", a: "브리지(Bridge) / 플라이웨이트(Flyweight) / 컴포지트(Composite)", tip: "브리지/플라이웨이트/컴포지트" },
+      { id: 109, cat: "4. SW 설계", q: "행위 패턴 11가지(전옵 중방이상인 매커책템)의 명칭은!", a: "전략, 옵서버, 중재자, 방문자, 이터레이터, 상태, 인터프리터, 메멘토, 커맨드, 책임 연쇄, 템플릿 메서드", tip: "전옵 중방이상인 매커책템" },
+      { id: 110, cat: "4. SW 설계", q: "알고리즘군을 캡슐화하여 동적 교체하는 패턴과 한 객체 변경 시 의존 객체들에 자동 갱신하는 패턴은?", a: "전략(Strategy) / 옵서버(Observer)", tip: "전략/옵서버" },
+      { id: 111, cat: "4. SW 설계", q: "객체 간 통신을 중앙 관리하는 패턴과 메서드가 클래스를 돌아다니며 새로운 기능을 추가하는 패턴은?", a: "중재자(Mediator) / 방문자(Visitor)", tip: "중재자/방문자" },
+      { id: 112, cat: "4. SW 설계", q: "컬렉션 요소를 순차 탐색하는 패턴과 내부 상태 변경 시 행동도 함께 바뀌는 패턴은?", a: "이터레이터(Iterator) / 상태(State)", tip: "이터레이터/상태" },
+      { id: 113, cat: "4. SW 설계", q: "언어 문법을 정의·해석하는 패턴과 실행 취소를 위해 내부 상태를 외부 노출 없이 저장하는 패턴은?", a: "인터프리터(Interpreter) / 메멘토(Memento)", tip: "인터프리터/메멘토" },
+      { id: 114, cat: "4. SW 설계", q: "요청 자체를 객체로 캡슐화하는 패턴, 요청 처리 객체들을 연결해 처리하는 패턴, 상위 클래스 골격과 하위 클래스 구체화 패턴은?", a: "커맨드(Command) / 책임 연쇄 / 템플릿 메서드(Template Method)", tip: "커맨드/책임연쇄/템플릿메서드" },
+      { id: 115, cat: "4. SW 설계", q: "모듈 내부 요소들의 밀접한 관련 정도를 뜻하는 용어와 모듈 간 상호 의존 정도를 뜻하는 용어는!", a: "응집도 (Cohesion) / 결합도 (Coupling)", tip: "응집도높고 결합도낮아야" },
+      { id: 116, cat: "4. SW 설계", q: "응집도 7단계(우논시절통순기)의 순서와 가장 강한 응집도는?", a: "우연적 < 논리적 < 시간적 < 절차적 < 통신적(교환적) < 순차적 < 기능적 응집도(가장 강함)", tip: "우논시절통순기" },
+      { id: 117, cat: "4. SW 설계", q: "결합도 6단계(내공외제스자)의 순서와 가장 약한 결합도는?", a: "내용 > 공통 > 외부 > 제어 > 스탬프 > 자료 결합도(가장 약함)", tip: "내공외제스자" },
+      { id: 118, cat: "4. SW 설계", q: "모듈을 호출하는 상위 모듈 수(들어오는 화살표)와 모듈이 호출하는 하위 모듈 수(나가는 화살표)는?", a: "Fan-in / Fan-out", tip: "Fan-in(들어옴), Fan-out(나감)" },
+      { id: 119, cat: "4. SW 설계", q: "객체지향 설계 원칙 SOLID 5가지의 약자와 한글명은!", a: "SRP(단일책임), OCP(개방-폐쇄), LSP(리스코프 치환), ISP(인터페이스 분리), DIP(의존성 역전)", tip: "SOLID" },
+      { id: 120, cat: "4. SW 설계", q: "럼바우 객체 모델링(OMT)의 3가지 유형은!", a: "객체 모델링(객체/ER), 동적 모델링(상태), 기능 모델링(자료 흐름도 DFD)", tip: "객동기" },
+      { id: 121, cat: "4. SW 설계", q: "UML 정적 다이어그램 6가지(클객컴배복패)와 동적 다이어그램 6가지(유시커상활타)는!", a: "정적: 클래스, 객체, 컴포넌트, 배치, 복합체, 패키지 / 동적: 유스케이스, 시퀀스, 커뮤니케이션, 상태, 활동, 타이밍", tip: "클객컴배복패 / 유시커상활타" },
+      { id: 122, cat: "4. SW 설계", q: "클래스 다이어그램의 6가지 관계(포집 연의 일실)와 마름모·화살표 모양은?", a: "포함/복합(속찬마름모), 집합(속빈마름모), 연관(실선화살표), 의존(점선화살표), 일반화(실선속빈화살표), 실체화(점선속빈화살표)", tip: "포집연의일실" },
+      { id: 123, cat: "4. SW 설계", q: "비기능 요구사항의 5가지 주요 유형은?", a: "품질, 운영, 자원, 성능, 보안", tip: "품운자성보" },
+      { id: 124, cat: "4. SW 설계", q: "외부 동작은 유지하면서 내부 구조를 개선해 가독성·유지보수성을 높이는 기법과 변수명 앞에 자료형 약어를 붙이는 표기법은?", a: "리팩토링(Refactoring) / 헝가리안 표기법", tip: "리팩토링, 헝가리안" },
+      { id: 125, cat: "4. SW 설계", q: "변수명을 첫 단어 소문자, 다음 단어 첫글자 대문자로 쓰는 표기법과 단어를 밑줄(_)로 연결하는 표기법은?", a: "Camel Case / Snake Case", tip: "Camel, Snake" },
+      { id: 126, cat: "4. SW 설계", q: "모든 단어의 첫 글자를 대문자로 쓰는 표기법과 하이픈(-)으로 연결하는 표기법은?", a: "Pascal Case / Kebab Case", tip: "Pascal, Kebab" },
+      { id: 127, cat: "4. SW 설계", q: "UI 설계 원칙 4가지(직관성, 유효성, 학습성, 유연성)의 핵심 의미는?", a: "직관성(누구나 쉽게), 유효성(목적 완벽 달성), 학습성(쉽게 배우고), 유연성(요구 최대한 수용)", tip: "직유학유" },
+      { id: 128, cat: "4. SW 설계", q: "릴리스 노트 작성 항목 중 문서/제품/버전/날짜 등 식별 정보를 적는 항목은?", a: "헤더 (Header)", tip: "헤더=식별정보" },
+      { id: 129, cat: "4. SW 설계", q: "보헴(Boehm)이 제안한 프로그램 규모 기반 비용 산정 기법과 입력·출력·조회 기능점수 기반 기법은?", a: "COCOMO / FP (Function Point)", tip: "COCOMO, FP" },
+      { id: 130, cat: "4. SW 설계", q: "LoC 기반 개발 기간(월) 계산 공식은?", a: "총 LoC ÷ (개발자 수 × 1인당 월 평균 개발 라인 수)", tip: "총LoC/인원*월생산성" },
+
+      // --- 5과목: 보안 / 신기술 (131~160) ---
+      { id: 131, cat: "5. 보안/신기술", q: "출발지와 목적지 IP가 동일한 공격, ICMP Echo 브로드캐스팅 이용 공격, IP Fragment 조립 오류 유발 공격은?", a: "랜드 어택 / 스머프·스머핑 / 티어드롭", tip: "랜드/스머프/티어드롭" },
+      { id: 132, cat: "5. 보안/신기술", q: "과도하게 큰 ICMP 패킷 공격, TCP SYN만 전송하는 미완료 공격, 반사체 서버와 IP 스푸핑을 이용한 증폭 공격은!", a: "죽음의 핑(Ping of Death) / SYN 플러딩 / DRDoS", tip: "핑오브데스/SYN플러딩/DRDoS" },
+      { id: 133, cat: "5. 보안/신기술", q: "패스워드 크래킹 중 사전 단어 대입, 모든 문자 조합 시도, 사전+무차별 결합, 해시값 테이블 활용 공격은!", a: "사전 공격 / 무차별 공격(Brute-force) / 하이브리드 / 레인보우 테이블", tip: "사전/무차별/하이브리드/레인보우" },
+      { id: 134, cat: "5. 보안/신기술", q: "MAC 주소를 위조하는 근거리 통신망 스푸핑 공격과 TCP 3-way handshake 완료 후 세션을 가로채는 공격은!", a: "ARP 스푸핑 / 세션 하이재킹", tip: "ARP스푸핑, 세션하이재킹" },
+      { id: 135, cat: "5. 보안/신기술", q: "자가 복제 및 네트워크 전파 악성코드, 실행 파일 변형 악성코드, 정상 프로그램 위장 악성코드, 가짜 경고 유도 악성코드는?", a: "웜(Worm) / 바이러스 / 트로이 목마 / 스캐어웨어", tip: "웜/바이러스/트로이목마/스캐어웨어" },
+      { id: 136, cat: "5. 보안/신기술", q: "대칭키 블록 암호 중 IBM 개발 64비트, 이를 대체한 128비트, KISA 개발 한국 최초 표준, 전화기 음성용 암호는?", a: "DES / AES / SEED / Skipjack", tip: "DES/AES/SEED/Skipjack" },
+      { id: 137, cat: "5. 보안/신기술", q: "비대칭키(공개키) 암호 3가지(최초, 소인수분해, 타원곡선)와 단방향 해시 함수 3가지는?", a: "비대칭키: 디피-헬만, RSA, ECC / 해시: MD5, SHA-1, SHA-2", tip: "디피헬만/RSA/ECC, 해시3개" },
+      { id: 138, cat: "5. 보안/신기술", q: "서버 접근 통제 모델 중 소유자 신분 기반, 중앙 규칙/보안등급 기반, 중앙 관리자의 직무(역할) 기반 방식은!", a: "DAC(임의적) / MAC(강제적) / RBAC(역할기반)", tip: "DAC/MAC/RBAC" },
+      { id: 139, cat: "5. 보안/신기술", q: "보안 3A(AAA)의 3가지 요소와 비밀번호 제공 없이 웹사이트 접근 권한을 부여하는 기술은?", a: "Authentication(인증), Authorization(권한부여), Accounting(계정관리) / OAuth", tip: "인증권한계정 / OAuth" },
+      { id: 140, cat: "5. 보안/신기술", q: "고정 인프라나 중앙 제어 장치 없이 노드들이 자율적으로 구성하는 네트워크와 10cm 이내 기가급 근접 통신 기술은?", a: "애드혹 네트워크(Ad-hoc) / Zing", tip: "애드혹, Zing" },
+      { id: 141, cat: "5. 보안/신기술", q: "서버·스토리지 자원을 제공하는 클라우드, 개발 플랫폼 제공 클라우드, SW 제공 클라우드, 블록체인 개발 환경 클라우드는?", a: "IaaS / PaaS / SaaS / BaaS", tip: "IaaS/PaaS/SaaS/BaaS" },
+      { id: 142, cat: "5. 보안/신기술", q: "하드웨어 가상화로 VM을 관리하는 기술, OS 수준 격리 컨테이너 기술, 컨테이너 오케스트레이션 도구는?", a: "하이퍼바이저 / 도커(Docker) / 쿠버네티스(Kubernetes)", tip: "하이퍼바이저/도커/쿠버네티스" },
+      { id: 143, cat: "5. 보안/신기술", q: "빅데이터 분산 처리 프레임워크(HDFS+MapReduce), 대규모 로그 수집(Chukwa), RDBMS-하둡 간 데이터 전송 도구는?", a: "Hadoop / Chukwa / Sqoop", tip: "Hadoop/Chukwa/Sqoop" },
+      { id: 144, cat: "5. 보안/신기술", q: "수집·저장된 후 분석/활용되지 않아 보안·관리 비용만 증가시키는 데이터는?", a: "다크 데이터 (Dark Data)", tip: "다크데이터" },
+      { id: 145, cat: "5. 보안/신기술", q: "DNS·hosts 변조로 가짜 사이트로 유도하는 공격, 유사 오타 도메인 등록 공격, 특정 집단 방문 웹사이트 감염 잠복 공격은!", a: "파밍(Pharming) / 타이포스쿼팅 / 워터링 홀", tip: "파밍/타이포스쿼팅/워터링홀" },
+      { id: 146, cat: "5. 보안/신기술", q: "명확한 표적을 정해 지속적 정보수집 후 4단계(침투-검색-수집-유출)로 공격하는 지능형 지속 위협은!", a: "APT (Advanced Persistent Threat)", tip: "APT공격" },
+      { id: 147, cat: "5. 보안/신기술", q: "시스템 공격 중 검사 시점과 사용 시점의 경쟁 상태를 악용하는 공격과 공격자 존재를 숨기며 관리자 권한을 획득하는 도구는?", a: "레이스 컨디션 / 루트킷(Rootkit)", tip: "레이스컨디션/루트킷" },
+      { id: 148, cat: "5. 보안/신기술", q: "SW 개발 보안 취약점 4가지(버퍼 경계 검사 누락, 외부 입력 형식 문자열 사용, 자료형 범위 초과, ../ 경로 접근)는!", a: "버퍼 오버플로우 / 포맷 스트링 / 정수 오버플로 / 경로 조작(Path Traversal)", tip: "버퍼/포맷/정수/경로조작" },
+      { id: 149, cat: "5. 보안/신기술", q: "웹 공격 중 악의적 SQL 삽입 공격, 악성 스크립트 웹 페이지 삽입 공격, 사용자 권한 위조 요청 실행 공격은!", a: "SQL Injection / XSS / CSRF", tip: "SQL인젝션/XSS/CSRF" },
+      { id: 150, cat: "5. 보안/신기술", q: "정보보호 기본 3요소(CIA)와 확장 속성 3가지(인증, 부인방지, 책임추적성)는?", a: "기밀성, 무결성, 가용성 / 인증, 부인방지(전자서명), 책임추적성(감사로그)", tip: "기무가 / 인부책" },
+      { id: 151, cat: "5. 보안/신기술", q: "장애 후 정상 가동까지 허용 시간 목표와 데이터 손실 허용 시점/양 목표는?", a: "RTO (복구 시간 목표) / RPO (복구 시점 목표)", tip: "RTO(시간), RPO(시점)" },
+      { id: 152, cat: "5. 보안/신기술", q: "KISA가 운영하는 정보보호 관리체계 약어와 개인정보 통합 관리체계 명칭은?", a: "ISMS / ISMS-P", tip: "ISMS / ISMS-P" },
+      { id: 153, cat: "5. 보안/신기술", q: "네트워크 보안 솔루션 중 침입 탐지만 하는 장비, 탐지+자동 차단 장비, 웹 애플리케이션 방화벽은!", a: "IDS / IPS / WAF", tip: "IDS탐지, IPS차단, WAF웹방화벽" },
+      { id: 154, cat: "5. 보안/신기술", q: "단말의 백신·패치 검사 후 내부망 접속을 허용하는 보안 장비와 WEP를 보완한 임시 키 무결성 프로토콜은?", a: "NAC / TKIP", tip: "NAC, TKIP" },
+      { id: 155, cat: "5. 보안/신기술", q: "프로세서 내 보안/일반 영역을 하드웨어로 분리하는 기술과 위·변조 시 실행 코드를 중단시켜 무결성을 보장하는 기술은?", a: "TrustZone / 템퍼프루핑 (Tamper Proofing)", tip: "트러스트존, 템퍼프루핑" },
+      { id: 156, cat: "5. 보안/신기술", q: "소프트웨어 아키텍처 및 신기술 중 독립적 서비스와 API 통신을 하는 아키텍처와 현실-가상 상호작용 피드백 루프 시스템은?", a: "MSA (마이크로서비스 아키텍처) / CPS (사이버-물리 시스템)", tip: "MSA, CPS" },
+      { id: 157, cat: "5. 보안/신기술", q: "가상 모델과 동기화하여 시뮬레이션·예측하는 기술과 3차원 가상 세계 아바타 활동 공간은?", a: "디지털 트윈 (Digital Twin) / 메타버스", tip: "디지털트윈, 메타버스" },
+      { id: 158, cat: "5. 보안/신기술", q: "웹 정보와 서비스를 조합하여 새로운 소프트웨어를 생성하는 기술과 발행/구독 모델의 경량 IoT 메시징 프로토콜은?", a: "매시업(Mashup) / MQTT", tip: "매시업, MQTT" },
+      { id: 159, cat: "5. 보안/신기술", q: "제어부와 데이터부를 분리하고 중앙 집중 제어하는 네트워크 신기술과 네트워크 기능을 범용 하드웨어로 가상화하는 기술은?", a: "SDN (Software-Defined Networking) / NFV", tip: "SDN, NFV" },
+      { id: 160, cat: "5. 보안/신기술", q: "BLE 기반 70m 통신, 위치 인식 및 모바일 결제에 쓰이는 신기술은?", a: "비컨 (Beacon)", tip: "비컨=BLE위치" }
+    ];
+
+    // 상태 관리 (localStorage 연동)
+    let starredIds = JSON.parse(localStorage.getItem("eip_starred_160") || "[]");
+    let doneIds = JSON.parse(localStorage.getItem("eip_done_160") || "[]");
+    let currentCat = "ALL";
+    let hideDone = false;
+    let isShuffled = false;
+    let isListView = false;
+    let filteredCards = [...CARDS_DATA];
+    let currentIndex = 0;
+
+    // DOM 요소
+    const flashcard = document.getElementById("flashcard");
+    const frontCat = document.getElementById("frontCat");
+    const frontTip = document.getElementById("frontTip");
+    const frontId = document.getElementById("frontId");
+    const backId = document.getElementById("backId");
+    const frontQuestion = document.getElementById("frontQuestion");
+    const backAnswer = document.getElementById("backAnswer");
+    const frontStatus = document.getElementById("frontStatus");
+    const counterText = document.getElementById("counterText");
+    const statsText = document.getElementById("statsText");
+    const progressFill = document.getElementById("progressFill");
+    const starBtn = document.getElementById("starBtn");
+    const doneBtn = document.getElementById("doneBtn");
+    const searchInput = document.getElementById("searchInput");
+    const hideDoneBtn = document.getElementById("hideDoneBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const viewModeBtn = document.getElementById("viewModeBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const cardModeArea = document.getElementById("cardModeArea");
+    const listViewArea = document.getElementById("listViewArea");
+    const practiceBox = document.getElementById("practiceBox");
+    const practiceInput = document.getElementById("practiceInput");
+
+    function saveState() {
+      localStorage.setItem("eip_starred_160", JSON.stringify(starredIds));
+      localStorage.setItem("eip_done_160", JSON.stringify(doneIds));
+      statsText.textContent = `암기 완료 ${doneIds.length} / 160 · ⭐ 북마크 ${starredIds.length}`;
+    }
+
+    function applyFilter(resetIdx = true) {
+      const keyword = searchInput.value.trim().toLowerCase();
+      let list = CARDS_DATA.filter(card => {
+        if (currentCat === "STAR" && !starredIds.includes(card.id)) return false;
+        if (currentCat !== "ALL" && currentCat !== "STAR" && card.cat !== currentCat) return false;
+        if (hideDone && doneIds.includes(card.id)) return false;
+        if (keyword && !card.q.toLowerCase().includes(keyword) && !card.a.toLowerCase().includes(keyword)) return false;
+        return true;
+      });
+
+      if (isShuffled) {
+        // Fisher-Yates 셔플 적용으로 무작위성 균등화
+        list = [...list];
+        for (let i = list.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+      }
+
+      filteredCards = list;
+      if (resetIdx || currentIndex >= filteredCards.length) {
+        currentIndex = 0;
+      }
+      render();
+    }
+
+    function render() {
+      saveState();
+      flashcard.classList.remove("is-flipped");
+
+      if (filteredCards.length === 0) {
+        frontCat.textContent = "알림";
+        frontTip.style.display = "none";
+        frontId.textContent = "-";
+        frontQuestion.textContent = "조건에 맞는 카드가 없습니다.";
+        backAnswer.textContent = "-";
+        counterText.textContent = "0 / 0";
+        progressFill.style.width = "0%";
+        starBtn.classList.remove("active");
+        doneBtn.classList.remove("active");
+        listViewArea.innerHTML = `<div class="empty-state">조건에 해당하는 카드가 없습니다.</div>`;
+        return;
+      }
+
+      const card = filteredCards[currentIndex];
+      const padId = "#" + String(card.id).padStart(3, "0");
+      frontCat.textContent = card.cat;
+      frontTip.textContent = "💡 " + (card.tip || "암기 팁");
+      frontTip.style.display = card.tip ? "inline-block" : "none";
+      frontId.textContent = padId;
+      backId.textContent = padId;
+      frontQuestion.textContent = card.q;
+      
+      // 버그 수정: 카드 전환 시 뒷면 정답 미리보기 방지를 위해 플립 해제 후 텍스트 반영
+      setTimeout(() => {
+        backAnswer.textContent = card.a;
+      }, 150);
+
+      const isStar = starredIds.includes(card.id);
+      const isDone = doneIds.includes(card.id);
+
+      frontStatus.textContent = `${isStar ? "⭐ " : ""}${isDone ? "✅" : ""}`;
+      starBtn.classList.toggle("active", isStar);
+      doneBtn.classList.toggle("active", isDone);
+
+      counterText.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+      progressFill.style.width = `${((currentIndex + 1) / filteredCards.length) * 100}%`;
+
+      if (isListView) {
+        renderListView();
+      }
+    }
+
+    function renderListView() {
+      listViewArea.innerHTML = filteredCards.map(c => {
+        const padId = "#" + String(c.id).padStart(3, "0");
+        const isStar = starredIds.includes(c.id);
+        const isDone = doneIds.includes(c.id);
+        return `
+          <div class="list-item">
+            <div class="list-item-top">
+              <span>${c.cat} (💡 ${c.tip || '-'})</span>
+              <span>${padId}</span>
+            </div>
+            <div class="list-item-q">Q. ${c.q}</div>
+            <div class="list-item-a">A. ${c.a}</div>
+            <div class="list-item-actions">
+              <button class="mini-btn ${isStar ? 'active-star' : ''}" onclick="toggleListStar(${c.id})">⭐ 북마크</button>
+              <button class="mini-btn ${isDone ? 'active-done' : ''}" onclick="toggleListDone(${c.id})">✅ 완료</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.toggleListStar = function(id) {
+      if (starredIds.includes(id)) {
+        starredIds = starredIds.filter(i => i !== id);
+      } else {
+        starredIds.push(id);
+      }
+      render();
+    };
+
+    window.toggleListDone = function(id) {
+      if (doneIds.includes(id)) {
+        doneIds = doneIds.filter(i => i !== id);
+      } else {
+        doneIds.push(id);
+      }
+      render();
+    };
+
+    function toggleFlip() {
+      if (filteredCards.length === 0) return;
+      flashcard.classList.toggle("is-flipped");
+    }
+
+    flashcard.addEventListener("click", toggleFlip);
+    document.getElementById("flipBtn").addEventListener("click", toggleFlip);
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (filteredCards.length === 0) return;
+      currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+      practiceInput.value = "";
+      render();
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (filteredCards.length === 0) return;
+      currentIndex = (currentIndex + 1) % filteredCards.length;
+      practiceInput.value = "";
+      render();
+    });
+
+    starBtn.addEventListener("click", () => {
+      if (filteredCards.length === 0) return;
+      const id = filteredCards[currentIndex].id;
+      if (starredIds.includes(id)) {
+        starredIds = starredIds.filter(i => i !== id);
+      } else {
+        starredIds.push(id);
+      }
+      if (currentCat === "STAR") applyFilter(false);
+      else render();
+    });
+
+    doneBtn.addEventListener("click", () => {
+      if (filteredCards.length === 0) return;
+      const id = filteredCards[currentIndex].id;
+      if (doneIds.includes(id)) {
+        doneIds = doneIds.filter(i => i !== id);
+      } else {
+        doneIds.push(id);
+      }
+      if (hideDone) applyFilter(false);
+      else render();
+    });
+
+    document.getElementById("categoryTabs").addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab-btn");
+      if (!btn) return;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentCat = btn.dataset.cat;
+      applyFilter(true);
+    });
+
+    searchInput.addEventListener("input", () => applyFilter(true));
+
+    hideDoneBtn.addEventListener("click", () => {
+      hideDone = !hideDone;
+      hideDoneBtn.classList.toggle("active", hideDone);
+      applyFilter(true);
+    });
+
+    shuffleBtn.addEventListener("click", () => {
+      isShuffled = !isShuffled;
+      shuffleBtn.classList.toggle("active", isShuffled);
+      applyFilter(true);
+    });
+
+    viewModeBtn.addEventListener("click", () => {
+      isListView = !isListView;
+      viewModeBtn.classList.toggle("active", isListView);
+      cardModeArea.style.display = isListView ? "none" : "flex";
+      listViewArea.classList.toggle("show", isListView);
+      render();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      if (confirm("학습 기록(완료 및 북마크)을 모두 초기화하시겠습니까?")) {
+        starredIds = [];
+        doneIds = [];
+        localStorage.removeItem("eip_starred_160");
+        localStorage.removeItem("eip_done_160");
+        applyFilter(true);
+      }
+    });
+
+    // 직접 입력 모드
+    const typingToggleBtn = document.getElementById("typingToggleBtn");
+    typingToggleBtn.addEventListener("click", () => {
+      practiceBox.classList.toggle("show");
+      typingToggleBtn.classList.toggle("active");
+      if (practiceBox.classList.contains("show")) practiceInput.focus();
+    });
+
+    function checkPracticeAnswer() {
+      if (filteredCards.length === 0) return;
+      flashcard.classList.add("is-flipped");
+    }
+
+    document.getElementById("checkAnswerBtn").addEventListener("click", checkPracticeAnswer);
+    practiceInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.stopPropagation();
+        checkPracticeAnswer();
+      }
+    });
+
+    // 다크 모드 (localStorage 연동 저장)
+    const themeBtn = document.getElementById("themeBtn");
+    const savedTheme = localStorage.getItem("eip_theme") || "light";
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+      themeBtn.textContent = "☀️";
+    }
+
+    themeBtn.addEventListener("click", () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      const newTheme = isDark ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("eip_theme", newTheme);
+      themeBtn.textContent = isDark ? "🌙" : "☀️";
+    });
+
+    // 터치 스와이프 제스처 (수직 스크롤 간섭 방지)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    const cardStage = document.getElementById("cardStage");
+
+    cardStage.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    cardStage.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+      
+      // 수평 이동 거리가 수직 이동 거리보다 크고 일정 이상일 때만 스와이프 작동
+      if (Math.abs(diffX) > 55 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) document.getElementById("nextBtn").click();
+        else document.getElementById("prevBtn").click();
+      }
+    }, { passive: true });
+
+    // 키보드 단축키
+    window.addEventListener("keydown", (e) => {
+      if (document.activeElement === searchInput || document.activeElement === practiceInput) return;
+      if (e.code === "Space") {
+        e.preventDefault();
+        toggleFlip();
+      } else if (e.code === "ArrowRight") {
+        document.getElementById("nextBtn").click();
+      } else if (e.code === "ArrowLeft") {
+        document.getElementById("prevBtn").click();
+      } else if (e.key.toLowerCase() === "s") {
+        starBtn.click();
+      } else if (e.key.toLowerCase() === "d") {
+        doneBtn.click();
+      }
+    });
+
+    // 초기 렌더링
+    applyFilter(true);
+  </script>
+</body>
+</html>
